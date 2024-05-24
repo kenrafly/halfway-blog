@@ -108,9 +108,7 @@ const CreatePost = () => {
             <option value="accounting"> Accounting</option>
             <option value="taxation"> Taxation</option>
             <option value="auditing"> Auditing</option>
-            <option value="publicsectoraccounting">
-              Public Sector Accounting
-            </option>
+            <option value="publicsector">Public Sector</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">
