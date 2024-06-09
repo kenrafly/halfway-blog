@@ -4,6 +4,7 @@ import {
   HiArrowSmRight,
   HiDocumentText,
   HiOutlineUserGroup,
+  HiAnnotation,
 } from "react-icons/hi";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -13,9 +14,9 @@ import { useSelector } from "react-redux";
 
 export default function DashSidebar() {
   const location = useLocation();
-  const [tab, setTab] = useState("");
-  const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
+  const [tab, setTab] = useState("");
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tabFromUrl = urlParams.get("tab");
@@ -23,10 +24,9 @@ export default function DashSidebar() {
       setTab(tabFromUrl);
     }
   }, [location.search]);
-
-  const handleSignOut = async () => {
+  const handleSignout = async () => {
     try {
-      const res = await fetch("/api/user/logout", {
+      const res = await fetch("/api/user/signout", {
         method: "POST",
       });
       const data = await res.json();
@@ -35,7 +35,7 @@ export default function DashSidebar() {
       } else {
         dispatch(signOutSuccess());
       }
-    } catch {
+    } catch (error) {
       console.log(error.message);
     }
   };
@@ -66,21 +66,31 @@ export default function DashSidebar() {
             </Link>
           )}
           {currentUser.isAdmin && (
-            <Link to="/dashboard?tab=users">
-              <Sidebar.Item
-                active={tab === "users"}
-                icon={HiOutlineUserGroup}
-                as="div"
-              >
-                Users
-              </Sidebar.Item>
-            </Link>
+            <>
+              <Link to="/dashboard?tab=users">
+                <Sidebar.Item
+                  active={tab === "users"}
+                  icon={HiOutlineUserGroup}
+                  as="div"
+                >
+                  Users
+                </Sidebar.Item>
+              </Link>
+              <Link to="/dashboard?tab=comments">
+                <Sidebar.Item
+                  active={tab === "comments"}
+                  icon={HiAnnotation}
+                  as="div"
+                >
+                  Comments
+                </Sidebar.Item>
+              </Link>
+            </>
           )}
-
           <Sidebar.Item
             icon={HiArrowSmRight}
             className="cursor-pointer"
-            onClick={handleSignOut}
+            onClick={handleSignout}
           >
             Sign Out
           </Sidebar.Item>
